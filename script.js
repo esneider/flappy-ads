@@ -3,6 +3,8 @@ var game = {
     gravity: -10,
     delta: 0.00015,
     clickVelocityGain: 5,
+    x: 0,
+    velocity: 1,
     stage: null,
     bird: {
         y: 0.5,
@@ -11,13 +13,18 @@ var game = {
         color: 'Crimson',
         shape: null,
     },
-    background: {
+    billboard: {
+        relWidth: 0.2,
+        ratio: 1.1,
+        path: 'img/billboard.jpg',
         x: 0,
-        velocity: 1,
-        acceleration: 0.1,
+        image: null,
+        shape: null,
     },
-    obstacles: {
-        separation: 100,
+    obstacle: {
+        x: 0,
+        up: null,
+        down: null,
     }
 };
 
@@ -38,6 +45,29 @@ function init() {
     bird.shape.y = window.innerHeight * bird.y;
     bird.shape.x = window.innerWidth / 2;
     game.stage.addChild(bird.shape);
+
+    // Create obstacles
+    var obstacle = game.obstacle;
+    obstacle.x = window.innerWidth;
+    obstacle.up = new createjs.Shape();
+    obstacle.down = new createjs.Shape();
+
+    // Create background
+    var billboard = game.billboard;
+    var width = window.innerWidth * billboard.relWidth;
+    var height = width / billboard.ratio;
+
+    console.log(width, height);
+
+    billboard.image = new Image();
+    billboard.image.src = billboard.path;
+    // billboard.image.width = width;
+    // billboard.image.height = width / billboard.ratio;
+    billboard.shape = new createjs.Bitmap(billboard.image);
+    // billboard.shape.image.width = width;
+    // billboard.shape.image.height = width / billboard.ratio;
+    // billboard.x = window.innerWidth * 1.4;
+    game.stage.addChild(billboard.shape);
 
     // Handle events
     game.stage.addEventListener('stagemousedown', handleClick);
@@ -66,6 +96,10 @@ function handleTick() {
     bird.y += bird.velocity * time;
 
     createjs.Tween.get(bird.shape).to({y: window.innerHeight * (1 - bird.y)}, 0);
+
+    // Redraw billboard
+    var billboard = game.billboard;
+    // createjs.Tween.get()
 
     // Redraw obstacles
     var background = game.background;
