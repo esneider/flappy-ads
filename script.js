@@ -4,7 +4,7 @@ var game = {
     delta: 0.00015,
     clickVelocityGain: 5,
     x: 0,
-    velocity: 1,
+    velocity: 1000,
     stage: null,
     bird: {
         y: 0.5,
@@ -17,15 +17,13 @@ var game = {
         relWidth: 0.2,
         ratio: 1.1,
         path: 'img/billboard.jpg',
+        relSeparation: 1.5,
         x: 0,
+        width: 0,
+        height: 0,
         image: null,
         shape: null,
     },
-    obstacle: {
-        x: 0,
-        up: null,
-        down: null,
-    }
 };
 
 function init() {
@@ -54,11 +52,9 @@ function init() {
 
     // Create background
     var billboard = game.billboard;
-    var width = window.innerWidth * billboard.relWidth;
-    var height = width / billboard.ratio;
 
-    console.log(width, height);
-
+    billboard.width = window.innerWidth * billboard.relWidth;
+    billboard.height = billboard.width / billboard.ratio;
     billboard.image = new Image();
     billboard.image.src = billboard.path;
     // billboard.image.width = width;
@@ -66,7 +62,8 @@ function init() {
     billboard.shape = new createjs.Bitmap(billboard.image);
     // billboard.shape.image.width = width;
     // billboard.shape.image.height = width / billboard.ratio;
-    // billboard.x = window.innerWidth * 1.4;
+    billboard.x = window.innerWidth * (billboard.relSeparation - 0.5);
+    billboard.y = window.innerHeight - billboard.height;
     game.stage.addChild(billboard.shape);
 
     // Handle events
@@ -88,20 +85,24 @@ function handleClick() {
 
 function handleTick() {
 
+    // Advance background
+    var time = game.fps * game.delta;
+    game.x += game.velocity * time;
+
     // Redraw bird
     var bird = game.bird;
-    var time = game.fps * game.delta;
-
     bird.velocity += game.gravity * time;
     bird.y += bird.velocity * time;
-
     createjs.Tween.get(bird.shape).to({y: window.innerHeight * (1 - bird.y)}, 0);
 
     // Redraw billboard
     var billboard = game.billboard;
-    // createjs.Tween.get()
 
-    // Redraw obstacles
-    var background = game.background;
+    if (billboard.x + billboard.width < game.x) {
+        billboard.x += window.innerWidth * billboard.relSeparation;
+    }
 
+    var billboardX = billboard.x - game.x;
+    createjs.Tween.get(billboard.shape).to({x: billboardX, y: billboard.y}, 0);
+    console.log(billboardX);
 }
