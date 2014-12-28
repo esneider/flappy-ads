@@ -14,10 +14,12 @@ var game = {
         shape: null,
     },
     billboard: {
-        relWidth: 0.2,
-        ratio: 1.1,
         path: 'img/billboard.png',
-        relSeparation: 1.5,
+        relSeparation: 1.75,
+        width: 196,
+        height: 1166,
+        billboardHeight: 455,
+        holeHeight: 240,
         x: 0,
         width: 0,
         height: 0,
@@ -25,6 +27,13 @@ var game = {
         shape: null,
     },
 };
+
+function randY() {
+    var billboard = game.billboard;
+    var min = -billboard.billboardHeight;
+    var width = billboard.holeHeight - window.innerHeight;
+    return min - Math.random() * width;
+}
 
 function init() {
 
@@ -39,8 +48,8 @@ function init() {
     // Create background
     var billboard = game.billboard;
 
-    billboard.width = window.innerWidth * billboard.relWidth;
-    billboard.height = billboard.width / billboard.ratio;
+    // billboard.width = window.innerWidth * billboard.relWidth;
+    // billboard.height = billboard.width / billboard.ratio;
     billboard.image = new Image();
     billboard.image.src = billboard.path;
     // billboard.image.width = width;
@@ -49,7 +58,8 @@ function init() {
     // billboard.shape.image.width = width;
     // billboard.shape.image.height = width / billboard.ratio;
     billboard.x = window.innerWidth * (billboard.relSeparation - 0.5);
-    billboard.y = 0;
+    billboard.y = randY();
+    console.log(billboard.y);
     // billboard.y = window.innerHeight - billboard.height;
     game.stage.addChild(billboard.shape);
 
@@ -95,9 +105,11 @@ function handleTick() {
 
     if (billboard.x + billboard.width < game.x) {
         billboard.x += window.innerWidth * billboard.relSeparation;
+        billboard.y = randY();
     }
 
     var billboardX = billboard.x - game.x;
     createjs.Tween.get(billboard.shape).to({x: billboardX, y: billboard.y}, 0);
-    console.log(billboardX);
+
+    // Check for collisions
 }
