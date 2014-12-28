@@ -12,6 +12,7 @@ function init() {
     circle.x = 100;
     circle.y = 100;
     stage.addChild(circle);
+    stage.addEventListener("stagemousedown", handleClick);
 
     // createjs.Tween.get(circle, {loop: true})
         // .to({x: 400}, 1000, createjs.Ease.getPowInOut(4))
@@ -22,4 +23,8 @@ function init() {
 
     createjs.Ticker.setFPS(60);
     createjs.Ticker.addEventListener('tick', stage);
+}
+
+function handleClick() {
+    console.log("you clicked");
 }
