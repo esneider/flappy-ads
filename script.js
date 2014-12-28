@@ -10,6 +10,14 @@ var game = {
         radius: 35,
         color: 'Crimson',
         shape: null,
+    },
+    background: {
+        x: 0,
+        velocity: 1,
+        acceleration: 0.1,
+    },
+    obstacles: {
+        separation: 100,
     }
 };
 
@@ -31,14 +39,6 @@ function init() {
     bird.shape.x = window.innerWidth / 2;
     game.stage.addChild(bird.shape);
 
-    // createjs.Tween.get(circle).to({});
-    // createjs.Tween.get(circle, {loop: true})
-        // .to({x: 400}, 1000, createjs.Ease.getPowInOut(4))
-        // .to({alpha: 0, y: 75}, 500, createjs.Ease.getPowInOut(2))
-        // .to({alpha: 0, y: 125}, 100)
-        // .to({alpha: 1, y: 100}, 500, createjs.Ease.getPowInOut(2))
-        // .to({x: 100}, 800, createjs.Ease.getPowInOut(2));
-
     // Handle events
     game.stage.addEventListener('stagemousedown', handleClick);
     game.stage.addEventListener('tick', handleTick);
@@ -58,6 +58,7 @@ function handleClick() {
 
 function handleTick() {
 
+    // Redraw bird
     var bird = game.bird;
     var time = game.fps * game.delta;
 
@@ -65,4 +66,8 @@ function handleTick() {
     bird.y += bird.velocity * time;
 
     createjs.Tween.get(bird.shape).to({y: window.innerHeight * (1 - bird.y)}, 0);
+
+    // Redraw obstacles
+    var background = game.background;
+
 }
