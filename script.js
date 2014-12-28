@@ -1,6 +1,8 @@
 var game = {
     fps: 60,
-    gravity: 9.8,
+    gravity: -10,
+    delta: 0.00015,
+    clickVelocityGain: 5,
     stage: null,
     bird: {
         y: 0.5,
@@ -38,7 +40,7 @@ function init() {
         // .to({x: 100}, 800, createjs.Ease.getPowInOut(2));
 
     // Handle events
-    game.stage.addEventListener("stagemousedown", handleClick);
+    game.stage.addEventListener('stagemousedown', handleClick);
     game.stage.addEventListener('tick', handleTick);
 
     // Enable touch gestures
@@ -50,10 +52,17 @@ function init() {
 }
 
 function handleClick() {
-    console.log("you clicked");
+
+    game.bird.velocity += game.clickVelocityGain;
 }
 
 function handleTick() {
-    // createjs.Tween.
-    // console.log('hey');
+
+    var bird = game.bird;
+    var time = game.fps * game.delta;
+
+    bird.velocity += game.gravity * time;
+    bird.y += bird.velocity * time;
+
+    createjs.Tween.get(bird.shape).to({y: window.innerHeight * (1 - bird.y)}, 0);
 }
