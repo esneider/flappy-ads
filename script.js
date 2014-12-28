@@ -1,6 +1,14 @@
-var bird = {
-    v: 0,
-    y: 0,
+var game = {
+    fps: 60,
+    gravity: 9.8,
+    stage: null,
+    bird: {
+        y: 0.5,
+        velocity: 0,
+        radius: 35,
+        color: 'Crimson',
+        shape: null,
+    }
 };
 
 function init() {
@@ -11,14 +19,15 @@ function init() {
     canvas.height = window.innerHeight;
 
     // Create the scene
-    var stage  = new createjs.Stage('mainCanvas');
+    game.stage = new createjs.Stage('mainCanvas');
 
     // Create the bird
-    bird = new createjs.Shape();
-    bird.graphics.beginFill('Crimson').drawCircle(0, 0, 50);
-    bird.y = window.innerHeight / 2;
-    bird.x = window.innerWidth / 2;
-    stage.addChild(bird);
+    var bird = game.bird;
+    bird.shape = new createjs.Shape();
+    bird.shape.graphics.beginFill(bird.color).drawCircle(0, 0, bird.radius);
+    bird.shape.y = window.innerHeight * bird.y;
+    bird.shape.x = window.innerWidth / 2;
+    game.stage.addChild(bird.shape);
 
     // createjs.Tween.get(circle).to({});
     // createjs.Tween.get(circle, {loop: true})
@@ -29,15 +38,15 @@ function init() {
         // .to({x: 100}, 800, createjs.Ease.getPowInOut(2));
 
     // Handle events
-    stage.addEventListener("stagemousedown", handleClick);
-    stage.addEventListener('tick', handleTick);
+    game.stage.addEventListener("stagemousedown", handleClick);
+    game.stage.addEventListener('tick', handleTick);
 
     // Enable touch gestures
-    createjs.Touch.enable(stage, true);
+    createjs.Touch.enable(game.stage, true);
 
     // Start animation
-    createjs.Ticker.setFPS(60);
-    createjs.Ticker.addEventListener('tick', stage);
+    createjs.Ticker.setFPS(game.fps);
+    createjs.Ticker.addEventListener('tick', game.stage);
 }
 
 function handleClick() {
