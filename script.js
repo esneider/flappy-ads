@@ -1,17 +1,25 @@
 function init() {
 
+    // Make the canvas fill the screen
     var canvas = document.getElementById('mainCanvas');
 
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
+    // Create the scene
     var stage  = new createjs.Stage('mainCanvas');
     var circle = new createjs.Shape();
 
+    // Enable touch gestures
+    createjs.Touch.enable(stage, true);
+
+    // Start drawing
     circle.graphics.beginFill('Crimson').drawCircle(0, 0, 50);
     circle.x = 100;
     circle.y = 100;
     stage.addChild(circle);
+
+    // Handle mouse down event
     stage.addEventListener("stagemousedown", handleClick);
 
     // createjs.Tween.get(circle, {loop: true})
