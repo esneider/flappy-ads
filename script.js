@@ -16,7 +16,7 @@ var game = {
     billboard: {
         relWidth: 0.2,
         ratio: 1.1,
-        path: 'img/billboard.jpg',
+        path: 'img/billboard.png',
         relSeparation: 1.5,
         x: 0,
         width: 0,
@@ -36,20 +36,6 @@ function init() {
     // Create the scene
     game.stage = new createjs.Stage('mainCanvas');
 
-    // Create the bird
-    var bird = game.bird;
-    bird.shape = new createjs.Shape();
-    bird.shape.graphics.beginFill(bird.color).drawCircle(0, 0, bird.radius);
-    bird.shape.y = window.innerHeight * bird.y;
-    bird.shape.x = window.innerWidth / 2;
-    game.stage.addChild(bird.shape);
-
-    // Create obstacles
-    var obstacle = game.obstacle;
-    obstacle.x = window.innerWidth;
-    obstacle.up = new createjs.Shape();
-    obstacle.down = new createjs.Shape();
-
     // Create background
     var billboard = game.billboard;
 
@@ -63,8 +49,17 @@ function init() {
     // billboard.shape.image.width = width;
     // billboard.shape.image.height = width / billboard.ratio;
     billboard.x = window.innerWidth * (billboard.relSeparation - 0.5);
-    billboard.y = window.innerHeight - billboard.height;
+    billboard.y = 0;
+    // billboard.y = window.innerHeight - billboard.height;
     game.stage.addChild(billboard.shape);
+
+    // Create the bird
+    var bird = game.bird;
+    bird.shape = new createjs.Shape();
+    bird.shape.graphics.beginFill(bird.color).drawCircle(0, 0, bird.radius);
+    bird.shape.y = window.innerHeight * bird.y;
+    bird.shape.x = window.innerWidth / 2;
+    game.stage.addChild(bird.shape);
 
     // Handle events
     game.stage.addEventListener('stagemousedown', handleClick);
