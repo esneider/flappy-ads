@@ -9,7 +9,7 @@ var game = {
     bird: {
         y: 0.5,
         velocity: 0,
-        radius: 35,
+        radius: 20,
         color: 'Crimson',
         shape: null,
     },
@@ -83,6 +83,12 @@ function init() {
     createjs.Ticker.addEventListener('tick', game.stage);
 }
 
+function gameOver() {
+
+
+    document.getElementById('gameOver').style.display = 'block';
+}
+
 function handleClick() {
 
     game.bird.velocity += game.clickVelocityGain;
@@ -112,4 +118,19 @@ function handleTick() {
     createjs.Tween.get(billboard.shape).to({x: billboardX, y: billboard.y}, 0);
 
     // Check for collisions
+    if (bird.y * window.innerHeight < - bird.radius / 2 ||
+        bird.y * window.innerHeight > window.innerHeight + bird.radius / 2) {
+
+        gameOver();
+    }
+
+    if (billboardX                   < (window.innerWidth + bird.radius) / 2 &&
+        billboardX + billboard.width > (window.innerWidth - bird.radius) / 2) {
+
+        if ((1 - bird.y) * window.innerHeight + bird.radius / 2 < billboard.y + billboard.billboardHeight ||
+            (1 - bird.y) * window.innerHeight - bird.radius / 2 > billboard.y + billboard.billboardHeight + billboard.holeHeight) {
+
+            gameOver();
+        }
+    }
 }
