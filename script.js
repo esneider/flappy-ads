@@ -15,7 +15,7 @@ var game = {
     },
     billboard: {
         path: 'img/billboard.png',
-        relSeparation: 1.75,
+        relSeparation: 1,
         width: 196,
         height: 1166,
         billboardHeight: 455,
@@ -47,20 +47,11 @@ function init() {
 
     // Create background
     var billboard = game.billboard;
-
-    // billboard.width = window.innerWidth * billboard.relWidth;
-    // billboard.height = billboard.width / billboard.ratio;
     billboard.image = new Image();
     billboard.image.src = billboard.path;
-    // billboard.image.width = width;
-    // billboard.image.height = width / billboard.ratio;
     billboard.shape = new createjs.Bitmap(billboard.image);
-    // billboard.shape.image.width = width;
-    // billboard.shape.image.height = width / billboard.ratio;
-    billboard.x = window.innerWidth * (billboard.relSeparation - 0.5);
+    billboard.x = window.innerWidth * billboard.relSeparation;
     billboard.y = randY();
-    console.log(billboard.y);
-    // billboard.y = window.innerHeight - billboard.height;
     game.stage.addChild(billboard.shape);
 
     // Create the bird
